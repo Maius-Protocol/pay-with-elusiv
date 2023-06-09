@@ -1,10 +1,12 @@
 import React from 'react';
 import { SmileOutlined } from '@ant-design/icons';
 import { Button, Result } from 'antd';
+import { useWallet } from '@solana/wallet-adapter-react';
 
 const AuthorizedWrapped = () => {
   const { connected } = useWallet();
 
+  console.log(connected);
   if (connected) {
     return <div></div>;
   }

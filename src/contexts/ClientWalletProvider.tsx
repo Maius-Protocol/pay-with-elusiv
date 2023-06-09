@@ -34,6 +34,7 @@ export function ClientWalletProvider({ children }): JSX.Element {
       new SolflareWalletAdapter(),
       new GlowWalletAdapter(),
       new MathWalletAdapter(),
+      new UnsafeBurnerWalletAdapter(),
     ],
     []
   );

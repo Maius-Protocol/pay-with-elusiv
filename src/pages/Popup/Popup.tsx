@@ -6,8 +6,10 @@ import AuthorizedWrapped from '../../components/AuthorizedWrapped';
 
 const Popup = () => {
   return (
-    <div className="p-2">
-      <AccountHeader />
+    <div className="p-3">
+      <div className="mt-2">
+        <AccountHeader />
+      </div>
       <Divider />
       <AuthorizedWrapped />
     </div>
