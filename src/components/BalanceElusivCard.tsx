@@ -14,16 +14,12 @@ function bytesToNumber(byteArray) {
   return result;
 }
 const BalanceElusivCard = () => {
-  const { data: elusivBalance, isLoading } = useElusivBalance();
+  const { data: elusivBalance, isLoading } = useElusivBalance('USDC');
 
   console.log(elusivBalance, 'elusivBalance');
-  console.log(Number(elusivBalance), 'elusivBalance');
-  console.log(bytesToNumber(elusivBalance), 'elusivBalance');
   return (
     <Card loading={isLoading}>
-      <Typography.Title level={3}>
-        {Number(elusivBalance) || 0} USDC
-      </Typography.Title>
+      <Typography.Title level={3}>{elusivBalance} USDC</Typography.Title>
     </Card>
   );
 };
