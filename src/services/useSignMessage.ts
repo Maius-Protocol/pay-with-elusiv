@@ -7,7 +7,7 @@ function useSignMessage() {
   const encoder = new TextEncoder();
   const pubKey = wallet?.adapter?.publicKey?.toBase58();
   return useQuery(
-    [pubKey],
+    ['signed-message', pubKey],
     () => {
       return signMessage!(encoder.encode(SEED_MESSAGE));
     },

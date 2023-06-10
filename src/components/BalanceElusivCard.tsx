@@ -19,7 +19,9 @@ const BalanceElusivCard = () => {
   console.log(elusivBalance, 'elusivBalance');
   return (
     <Card loading={isLoading}>
-      <Typography.Title level={3}>{elusivBalance} USDC</Typography.Title>
+      <Typography.Title level={3}>
+        {elusivBalance?.toString()} USDC
+      </Typography.Title>
     </Card>
   );
 };

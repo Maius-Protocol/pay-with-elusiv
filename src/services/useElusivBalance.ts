@@ -8,10 +8,16 @@ function useElusivBalance(tokenType: TokenType) {
   const pubKey = wallet?.adapter?.publicKey?.toBase58();
   const { data: elusivInstance } = useElusivInstance();
 
-  return useQuery([pubKey], async () => {
-    const amount = await elusivInstance?.getLatestPrivateBalance(tokenType);
-    return Number(amount);
-  });
+  return useQuery(
+    ['elusiv-balance', pubKey],
+    async () => {
+      const amount = await elusivInstance?.getLatestPrivateBalance(tokenType);
+      return Number(amount);
+    },
+    {
+      enabled: !!elusivInstance && !!pubKey,
+    }
+  );
 }
 
 export default useElusivBalance;

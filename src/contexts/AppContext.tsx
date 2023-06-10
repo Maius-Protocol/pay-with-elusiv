@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { ReactQueryDevtools } from 'react-query/devtools';
 
 const AppContext = React.createContext({});
 
@@ -12,6 +13,7 @@ const AppProvider = ({ children }) => {
       }}
     >
       {children}
+      <ReactQueryDevtools />
     </AppContext.Provider>
   );
 };

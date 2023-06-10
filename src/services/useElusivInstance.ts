@@ -13,7 +13,7 @@ function useElusivInstance() {
   const pubKey = wallet?.adapter?.publicKey?.toBase58();
 
   return useQuery(
-    [pubKey],
+    ['elusiv-instance', pubKey],
     async () => {
       return await Elusiv.getElusivInstance(
         data!,
