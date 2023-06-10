@@ -1,17 +1,16 @@
 import React from 'react';
-import { Button, Divider } from 'antd';
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import { Divider } from 'antd';
 import AccountHeader from '../../components/AccountHeader';
-import AuthorizedWrapped from '../../components/AuthorizedWrapped';
+import useAnimatedNavigate from '../../hooks/useAnimatedNavigate';
 
 const Popup = () => {
+  const navigate = useAnimatedNavigate();
   return (
     <div className="p-3">
       <div className="mt-2">
         <AccountHeader />
       </div>
-      <Divider />
-      <AuthorizedWrapped />
+      <Divider style={{ marginTop: '16px' }} />
     </div>
   );
 };

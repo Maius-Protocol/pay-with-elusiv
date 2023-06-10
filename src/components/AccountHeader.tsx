@@ -1,15 +1,19 @@
 import React from 'react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { Avatar, Button } from 'antd';
+import { Avatar, Button, Typography } from 'antd';
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
+import useAnimatedNavigate from '../hooks/useAnimatedNavigate';
+import { RoutesName } from '../constants/routes';
 
 const AccountHeader = () => {
-  const { connected, wallet } = useWallet();
+  const { connected, disconnect, wallet } = useWallet();
+  const navigate = useAnimatedNavigate();
 
-  if (!connected) {
-    return <WalletMultiButton style={{ width: '100%' }} />;
-  }
+  const disconnectWallet = async () => {
+    await disconnect();
+    navigate(RoutesName.WELCOME);
+  };
 
   return (
     <div className="d-flex flex-row align-items-center justify-content-between">
@@ -31,7 +35,12 @@ const AccountHeader = () => {
         </div>
       </div>
       <div>
-        <Button type="dashed">
+        <Button
+          onClick={() => {
+            disconnectWallet();
+          }}
+          type="dashed"
+        >
           <div className="d-flex flex-row align-items-center">
             <LogoutOutlined style={{ marginRight: '8px' }} />
             Disconnect
