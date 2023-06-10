@@ -1,5 +1,4 @@
 import React from 'react';
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Avatar, Button, Typography } from 'antd';
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons';

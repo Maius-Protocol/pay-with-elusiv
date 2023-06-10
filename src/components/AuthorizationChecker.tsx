@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Spin } from 'antd';
 import { useWallet } from '@solana/wallet-adapter-react';
 import useAnimatedNavigate from '../hooks/useAnimatedNavigate';
-import { router, RoutesName } from '../constants/routes';
+import { RoutesName } from '../constants/routes';
 
 const AuthorizationChecker = () => {
   const { connected, connecting } = useWallet();

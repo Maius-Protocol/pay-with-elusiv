@@ -134,6 +134,8 @@ var options = {
       crypto: require.resolve('crypto-browserify'),
       http: require.resolve('stream-http'),
       zlib: require.resolve('browserify-zlib'),
+      os: require.resolve('os-browserify'),
+      buffer: require.resolve('buffer'),
     },
     alias: alias,
     extensions: fileExtensions
@@ -146,6 +148,13 @@ var options = {
     new webpack.ProgressPlugin(),
     // expose and write the allowed env vars on the compiled bundle
     new webpack.EnvironmentPlugin(['NODE_ENV']),
+
+    new webpack.ProvidePlugin({
+      Buffer: ['buffer', 'Buffer'],
+    }),
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    }),
     new CopyWebpackPlugin({
       patterns: [
         {

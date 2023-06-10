@@ -1,8 +1,7 @@
 import {
   ConnectionProvider,
-  WalletProviderProps,
+  WalletProvider,
 } from '@solana/wallet-adapter-react';
-import { WalletProvider } from '@solana/wallet-adapter-react';
 
 import {
   GlowWalletAdapter,
@@ -10,22 +9,20 @@ import {
   PhantomWalletAdapter,
   SolflareWalletAdapter,
   SolletWalletAdapter,
+  UnsafeBurnerWalletAdapter,
 } from '@solana/wallet-adapter-wallets';
-import React, { useMemo } from 'react';
-
-import { UnsafeBurnerWalletAdapter } from '@solana/wallet-adapter-wallets';
+import React, { useMemo, useState } from 'react';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
-import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import { clusterApiUrl } from '@solana/web3.js';
 import { QueryClient, QueryClientProvider } from 'react-query';
-
-const queryClient = new QueryClient();
+import { cluster } from '../constants/network';
+import ElusivProvider from './ElusivContextProvider';
+import { useAppContext } from './AppContext';
 
 export function ClientWalletProvider({ children }): JSX.Element {
-  const network = WalletAdapterNetwork.Devnet;
-
+  const { cluster } = useAppContext();
   // You can also provide a custom RPC endpoint.
-  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+  const endpoint = useMemo(() => clusterApiUrl(cluster), [cluster]);
   const wallets = useMemo(
     () => [
       new PhantomWalletAdapter(),
@@ -39,13 +36,11 @@ export function ClientWalletProvider({ children }): JSX.Element {
   );
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ConnectionProvider endpoint={endpoint}>
-        <WalletProvider wallets={wallets} autoConnect>
-          <WalletModalProvider>{children}</WalletModalProvider>
-        </WalletProvider>
-      </ConnectionProvider>
-    </QueryClientProvider>
+    <ConnectionProvider endpoint={endpoint}>
+      <WalletProvider wallets={wallets} autoConnect>
+        <WalletModalProvider>{children}</WalletModalProvider>
+      </WalletProvider>
+    </ConnectionProvider>
   );
 }
 

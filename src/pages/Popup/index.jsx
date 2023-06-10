@@ -7,12 +7,25 @@ import 'antd/dist/reset.css';
 import './index.css';
 import ClientWalletProvider from '../../contexts/ClientWalletProvider';
 import { router } from '../../constants/routes';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import AppProvider from '../../contexts/AppContext';
 
 const container = document.getElementById('app-container');
 const root = createRoot(container); // createRoot(container!) if you use TypeScript
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 root.render(
-  <ClientWalletProvider>
-    <RouterProvider router={router} />
-  </ClientWalletProvider>
+  <QueryClientProvider client={queryClient}>
+    <AppProvider>
+      <ClientWalletProvider>
+        <RouterProvider router={router} />
+      </ClientWalletProvider>
+    </AppProvider>
+  </QueryClientProvider>
 );
