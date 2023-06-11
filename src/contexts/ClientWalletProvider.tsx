@@ -14,9 +14,6 @@ import {
 import React, { useMemo, useState } from 'react';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import { clusterApiUrl } from '@solana/web3.js';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { cluster } from '../constants/network';
-import ElusivProvider from './ElusivContextProvider';
 import { useAppContext } from './AppContext';
 
 export function ClientWalletProvider({ children }): JSX.Element {
