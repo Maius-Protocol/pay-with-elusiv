@@ -1,8 +1,9 @@
 import { Card, Typography, Button } from 'antd';
 import React from 'react';
 import useElusivBalance from '../services/useElusivBalance';
-import useElusivSend from "../services/useElusivSend";
-import {PublicKey} from "@solana/web3.js";
+import useElusivSend from '../services/useElusivSend';
+import { PublicKey } from '@solana/web3.js';
+import { useWallet } from '@solana/wallet-adapter-react';
 
 function bytesToNumber(byteArray) {
   if (!byteArray || !byteArray.length) {
@@ -17,18 +18,23 @@ function bytesToNumber(byteArray) {
 }
 const BalanceElusivCard = () => {
   const { data: elusivBalance, isLoading } = useElusivBalance('USDC');
-  const { isLoading: isSending, mutateAsync: send } = useElusivSend(10000000, new PublicKey("5v4DXdsXcPe9wrg98fZEHeY2DeamEyMAqLipj3du9ejU"), 'USDC');
+  const { isLoading: isSending, mutateAsync: send } = useElusivSend();
+  const { wallet } = useWallet();
 
   console.log(elusivBalance, 'elusivBalance');
   return (
     <Card loading={isLoading}>
       <Button
-          onClick={() => {
-            send();
-          }}
-          loading={isSending}
-          style={{ marginRight: 24 }}
-          type="primary"
+        onClick={() => {
+          send({
+            amount: 0.2,
+            recipient: wallet?.adapter?.publicKey?.toBase58()!,
+            tokenType: 'LAMPORTS',
+          });
+        }}
+        loading={isSending}
+        style={{ marginRight: 24 }}
+        type="primary"
       >
         Reclaim Topup Wallet
       </Button>
