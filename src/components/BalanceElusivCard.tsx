@@ -4,6 +4,7 @@ import useElusivBalance from '../services/useElusivBalance';
 import useElusivSend from '../services/useElusivSend';
 import { PublicKey } from '@solana/web3.js';
 import { useWallet } from '@solana/wallet-adapter-react';
+import useElusivTopUp from "../services/useElusivTopUp";
 
 function bytesToNumber(byteArray) {
   if (!byteArray || !byteArray.length) {
@@ -18,28 +19,41 @@ function bytesToNumber(byteArray) {
 }
 const BalanceElusivCard = () => {
   const { data: elusivBalance, isLoading } = useElusivBalance('USDC');
+  const { isLoading: isTopUp, mutateAsync: topUp } = useElusivTopUp();
   const { isLoading: isSending, mutateAsync: send } = useElusivSend();
   const { wallet } = useWallet();
 
-  console.log(elusivBalance, 'elusivBalance');
   return (
     <Card loading={isLoading}>
       <Button
         onClick={() => {
-          send({
-            amount: 0.2,
-            recipient: wallet?.adapter?.publicKey?.toBase58()!,
-            tokenType: 'LAMPORTS',
+          topUp({
+            amount: 10_000_000,
+            tokenType: 'USDC',
           });
         }}
-        loading={isSending}
+        loading={isTopUp}
         style={{ marginRight: 24 }}
         type="primary"
       >
-        Reclaim Topup Wallet
+        Topup Wallet
       </Button>
+        <Button
+            onClick={() => {
+                send({
+                    amount: 10_000_000,
+                    recipient: "5v4DXdsXcPe9wrg98fZEHeY2DeamEyMAqLipj3du9ejU",
+                    tokenType: 'USDC',
+                });
+            }}
+            loading={isSending}
+            style={{ marginRight: 24 }}
+            type="primary"
+        >
+            Send Wallet
+        </Button>
       <Typography.Title level={3}>
-        {elusivBalance?.toString()} USDC
+        {(elusivBalance!/1_000_000)} USDC
       </Typography.Title>
     </Card>
   );

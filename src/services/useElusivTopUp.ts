@@ -2,20 +2,63 @@ import {useMutation, useQuery} from 'react-query';
 import useElusivInstance from './useElusivInstance';
 import {useConnection, useWallet} from '@solana/wallet-adapter-react';
 import { TokenType } from '@elusiv/sdk';
+import {useAppContext} from "../contexts/AppContext";
+import useSignMessage from "./useSignMessage";
+import {PublicKey, Transaction} from "@solana/web3.js";
+import {axiosInstance} from "../constants/axios";
+import bs58 from "bs58";
 
-function useElusivTopUp(amount: number, tokenType: TokenType) {
-    const { wallet, sendTransaction, signTransaction } = useWallet();
+interface ElusivTopUpInput {
+    amount: number;
+    tokenType: TokenType;
+}
+
+function useElusivTopUp() {
+    const { cluster } = useAppContext();
     const { connection } = useConnection();
-    const pubKey = wallet?.adapter?.publicKey?.toBase58();
-    const { data: elusivInstance } = useElusivInstance();
+    const { wallet } = useWallet();
+    const { signTransaction } = useWallet();
+    const { data: seed } = useSignMessage();
+    return useMutation(
+        async ({ amount, tokenType }: ElusivTopUpInput) => {
+            const sender = new PublicKey(wallet?.adapter.publicKey?.toBase58()!);
 
-    return useMutation(async () => {
-            const topupTx = await elusivInstance?.buildTopUpTx(amount, tokenType);
-            // Sign it (only needed for topups, as we're topping up from our public key there)
+            const { data } = await axiosInstance.get('/top-up', {
+                params: {
+                    seed: bs58.encode(seed!),
+                    cluster: cluster,
+                    userPublicKey: sender,
+                    token: tokenType,
+                    amount: amount,
+                },
+            });
+            const transactionEncoded = data?.transaction;
+            const transactionDecoded = new Buffer(transactionEncoded, 'base64');
+            const transaction = Transaction.from(transactionDecoded);
 
-            await signTransaction!((await topupTx!).tx)
+            const signedTransaction = await signTransaction!(transaction);
 
-            return await sendTransaction((await topupTx!).tx, connection)
+            const { data: signature } = await axiosInstance.post(
+                '/top-up',
+                {
+                    topupTxData: data?.topupTxData,
+                    signedTransaction: signedTransaction
+                        .serialize({
+                            verifySignatures: false,
+                            requireAllSignatures: false,
+                        })
+                        .toString('base64'),
+                },
+                {
+                    params: {
+                        seed: bs58.encode(seed!),
+                        cluster: cluster,
+                        userPublicKey: sender,
+                    },
+                }
+            );
+
+            return signature;
         }
     );
 }
