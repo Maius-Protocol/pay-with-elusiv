@@ -225,7 +225,9 @@ export class PayWithElusivWallet implements Wallet {
             if (account !== this.#account) throw new Error('invalid account');
             if (chain && !isSolanaChain(chain)) throw new Error('invalid chain');
 
-            const signedTransaction = await this.#payWithElusiv.signTransaction(VersionedTransaction.deserialize(transaction));
+            const signedTransaction = await this.#payWithElusiv.signTransaction(
+                VersionedTransaction.deserialize(transaction)
+            );
 
             outputs.push({ signedTransaction: signedTransaction.serialize() });
         } else if (inputs.length > 1) {
