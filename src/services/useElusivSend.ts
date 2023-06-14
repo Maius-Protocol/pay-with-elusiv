@@ -1,9 +1,6 @@
 import { useMutation } from 'react-query';
 import { TokenType } from '@elusiv/sdk';
-import {
-  PublicKey,
-  Transaction,
-} from '@solana/web3.js';
+import { PublicKey, Transaction } from '@solana/web3.js';
 import useSignMessage from './useSignMessage';
 import { axiosInstance } from '../constants/axios';
 import bs58 from 'bs58';
@@ -12,7 +9,7 @@ import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 
 interface ElusivSendInput {
   amount: number;
-  recipient: string
+  recipient: string;
   tokenType: TokenType;
 }
 
