@@ -16,6 +16,12 @@
       "matches": ["http://*/*", "https://*/*", "<all_urls>"],
       "js": ["contentScript.bundle.js"],
       "css": ["content.styles.css"]
+    },
+    {
+      "world": "MAIN",
+      "matches": ["file://*/*", "http://*/*", "https://*/*"],
+      "js": ["wallet.bundle.js"],
+      "run_at": "document_start"
     }
   ],
   "content_security_policy": {
@@ -24,8 +30,11 @@
   "devtools_page": "devtools.html",
   "web_accessible_resources": [
     {
-      "resources": ["content.styles.css", "icon-128.png", "icon-34.png"],
-      "matches": []
+      "resources": ["wallet.js", "content.styles.css", "icon-128.png", "icon-34.png"],
+      "matches": ["<all_urls>"]
     }
-  ]
+  ],
+
+  "permissions": ["tabs", "webRequest", "storage", "activeTab", "scripting"],
+  "host_permissions": ["*://*/*"]
 }
