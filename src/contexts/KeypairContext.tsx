@@ -32,19 +32,31 @@ const KeypairProvider = ({ children }) => {
     }));
   }, [serializedKeypairs]);
 
-  const createKeypair = ({ used_at }) => {
+  const createKeypair = () => {
     const _keypair = Keypair.generate();
+    let url;
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      url = tabs[0].url;
+    });
     setKeypairs([
       ...serializedKeypairs,
       {
         privateKey: encode(_keypair.secretKey),
-        used_at,
+        used_at: url,
         created_at: new Date(),
       },
     ]);
     message.success(
       `Created a new keypair with PublicKey: ${_keypair?.publicKey?.toBase58()}`
     );
+
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      chrome.tabs.sendMessage(
+        tabs[0].id,
+        { currentPrivateKey: encode(keypair?.secretKey) },
+        function (response) {}
+      );
+    });
     return _keypair;
   };
 

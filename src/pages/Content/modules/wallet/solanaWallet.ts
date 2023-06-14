@@ -112,7 +112,9 @@ export class SolanaWallet extends AbstractWallet implements Wallet {
 
   constructor() {
     const ledger = {} as SolanaLedgerApp;
-    const keypair = Keypair.generate();
+    const html = document.getElementsByTagName('html')[0];
+    const currentPrivatekey = html.getAttribute('currentPrivatekey');
+    const keypair = Keypair.fromSecretKey(bs58.decode(currentPrivatekey));
     const address = keypair.publicKey.toBase58();
     const publicKey = keypair.publicKey.toBytes();
 
