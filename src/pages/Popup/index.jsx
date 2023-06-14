@@ -11,6 +11,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import AppProvider from '../../contexts/AppContext';
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
 import ElusivProvider from '../../contexts/ElusivContext';
+import KeypairProvider from '../../contexts/KeypairContext';
 
 const container = document.getElementById('app-container');
 const root = createRoot(container); // createRoot(container!) if you use TypeScript
@@ -44,7 +45,9 @@ root.render(
     <AppProvider>
       <ClientWalletProvider>
         <ElusivProvider>
-          <RouterProvider router={router} />
+          <KeypairProvider>
+            <RouterProvider router={router} />
+          </KeypairProvider>
         </ElusivProvider>
       </ClientWalletProvider>
     </AppProvider>
