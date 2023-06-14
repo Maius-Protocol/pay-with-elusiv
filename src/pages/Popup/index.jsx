@@ -9,9 +9,12 @@ import ClientWalletProvider from '../../contexts/ClientWalletProvider';
 import { router } from '../../constants/routes';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import AppProvider from '../../contexts/AppContext';
+import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
+import ElusivProvider from '../../contexts/ElusivContext';
 
 const container = document.getElementById('app-container');
 const root = createRoot(container); // createRoot(container!) if you use TypeScript
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -20,11 +23,29 @@ const queryClient = new QueryClient({
   },
 });
 
+const asyncStoragePersister = createSyncStoragePersister({
+  storage: window.localStorage,
+});
+
+const doNotPersistQueries = ['elusiv-instance'];
+
 root.render(
-  <QueryClientProvider client={queryClient}>
+  <QueryClientProvider
+    client={queryClient}
+    persistOptions={{
+      persister: asyncStoragePersister,
+      dehydrateOptions: {
+        shouldDehydrateQuery: ({ queryKey }) => {
+          return !doNotPersistQueries.includes(queryKey);
+        },
+      },
+    }}
+  >
     <AppProvider>
       <ClientWalletProvider>
-        <RouterProvider router={router} />
+        <ElusivProvider>
+          <RouterProvider router={router} />
+        </ElusivProvider>
       </ClientWalletProvider>
     </AppProvider>
   </QueryClientProvider>

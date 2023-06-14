@@ -9,7 +9,7 @@ function useElusivBalance(tokenType: TokenType) {
   const { data: elusivInstance } = useElusivInstance();
 
   return useQuery(
-    ['elusiv-balance', pubKey],
+    ['elusiv-balance', pubKey, tokenType],
     async () => {
       const amount = await elusivInstance?.getLatestPrivateBalance(tokenType);
       return Number(amount);
