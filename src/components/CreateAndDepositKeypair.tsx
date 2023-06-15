@@ -1,18 +1,18 @@
-import { Alert, Button, Form, Modal, Space } from 'antd';
+import { Alert, Button, Form, message, Modal, Space } from 'antd';
 import React, { useEffect } from 'react';
 import useDisclosure from '../hooks/useDisclosure';
 import { useMutation } from 'react-query';
 import { useElusivContext } from '../contexts/ElusivContext';
 import { ElusivSendInput } from '../services/useElusivSend';
-import { DepositForm } from './TokenSelect';
 import { TokenDecimal } from '../constants/constant';
 import Input from 'antd/es/input/Input';
 import { useKeypairContext } from '../contexts/KeypairContext';
 import { Keypair } from '@solana/web3.js';
+import DepositForm from './DepositForm';
 
-const CreateAndDepositKeypair = () => {
+export const CreateAndDepositModal = ({ createNewOne, modalState }) => {
+  const { isOpen, close } = modalState;
   const [form] = Form.useForm();
-  const { open, isOpen, close } = useDisclosure();
   const { sendFromElusivToAddress } = useElusivContext();
   const { createKeypair, activeKeypair } = useKeypairContext();
 
@@ -34,14 +34,38 @@ const CreateAndDepositKeypair = () => {
       tokenType: token,
       recipient: _keypair?.publicKey?.toBase58(),
     });
+    message.success('Your key is ready to use!');
     close();
   };
 
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && createNewOne) {
       createKeypair();
     }
-  }, [isOpen]);
+  }, [isOpen, createNewOne]);
+  return (
+    <Modal
+      title="How much you want to use in this keypair"
+      open={isOpen}
+      onOk={handleOk}
+      confirmLoading={isSending}
+      onCancel={close}
+    >
+      <Form form={form} onFinish={onFinish} initialValues={{ token: 'USDC' }}>
+        <DepositForm form={form} />
+        <Form.Item label="Send To">
+          <Input
+            disabled
+            value={activeKeypair?.keypair?.publicKey?.toBase58()}
+          />
+        </Form.Item>
+      </Form>
+    </Modal>
+  );
+};
+
+const CreateAndDepositKeypair = () => {
+  const modalState = useDisclosure();
 
   return (
     <>
@@ -54,7 +78,7 @@ const CreateAndDepositKeypair = () => {
           <Space direction="vertical">
             <Button
               onClick={() => {
-                open();
+                modalState.open();
               }}
               size="small"
               type="primary"
@@ -65,23 +89,7 @@ const CreateAndDepositKeypair = () => {
         }
       />
 
-      <Modal
-        title="How much you want to use in this keypair"
-        open={isOpen}
-        onOk={handleOk}
-        confirmLoading={isSending}
-        onCancel={close}
-      >
-        <Form form={form} onFinish={onFinish} initialValues={{ token: 'USDC' }}>
-          <DepositForm />
-          <Form.Item label="Send To">
-            <Input
-              disabled
-              value={activeKeypair?.keypair?.publicKey?.toBase58()}
-            />
-          </Form.Item>
-        </Form>
-      </Modal>
+      <CreateAndDepositModal createNewOne modalState={modalState} />
     </>
   );
 };
