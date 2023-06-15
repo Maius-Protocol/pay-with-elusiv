@@ -5,6 +5,7 @@ import { LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { ElusivTopUpInput } from '../services/useElusivTopUp';
 import { useMutation } from 'react-query';
 import { useElusivContext } from '../contexts/ElusivContext';
+import TokenSelect from './TokenSelect';
 import CountUp from 'react-countup';
 
 const formatter = (value: number) => (
@@ -44,29 +45,7 @@ const BalanceElusivCard = () => {
         />
       </div>
       <div className="d-flex flex-row align-items-center justify-content-between">
-        <Button
-          block
-          onClick={() => {
-            topup({
-              amount: LAMPORTS_PER_SOL * 0.1,
-              tokenType: 'LAMPORTS',
-            });
-          }}
-          loading={isTopuping}
-          style={{ marginRight: 24 }}
-          type="primary"
-        >
-          Topup (0.1 SOL)
-        </Button>
-        <Button
-          block
-          onClick={() => {}}
-          loading={isTopuping}
-          style={{ marginRight: 24 }}
-          type="primary"
-        >
-          Send to Huy (0.1 SOL)
-        </Button>
+        <TokenSelect></TokenSelect>
       </div>
     </Card>
   );
