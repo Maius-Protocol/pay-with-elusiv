@@ -1,8 +1,9 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 import { Keypair, PublicKey } from '@solana/web3.js';
 import bs58, { encode } from 'bs58';
 import { message } from 'antd';
+import _ from 'lodash';
 const KeypairContext = React.createContext({});
 
 interface SerializedKeypairInterface {
@@ -19,13 +20,16 @@ interface IAppKeypairs {
 
 const KeypairProvider = ({ children }) => {
   const [messageApi] = message.useMessage();
+  const [activeKeypair, setActiveKeypair] = useState<IAppKeypairs | undefined>(
+    undefined
+  );
 
   const [serializedKeypairs, setKeypairs] = useLocalStorage<
     SerializedKeypairInterface[]
   >('keypairs', []);
 
   const keypairs: IAppKeypairs = useMemo(() => {
-    return serializedKeypairs?.map((k) => ({
+    return _.orderBy(serializedKeypairs, 'created_at', 'desc')?.map((k) => ({
       keypair: Keypair.fromSecretKey(bs58.decode(k.privateKey)),
       used_at: k.used_at,
       created_at: k.created_at,
@@ -50,12 +54,10 @@ const KeypairProvider = ({ children }) => {
       `Created a new keypair with PublicKey: ${_keypair?.publicKey?.toBase58()}`
     );
 
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      chrome.tabs.sendMessage(
-        tabs[0].id,
-        { currentPrivateKey: encode(keypair?.secretKey) },
-        function (response) {}
-      );
+    setActiveKeypair({
+      keypair: _keypair,
+      used_at: url,
+      created_at: new Date(),
     });
     return _keypair;
   };
@@ -74,9 +76,39 @@ const KeypairProvider = ({ children }) => {
     message.success(`Removed keypair: ${publicKey?.toBase58()}`);
   };
 
+  useEffect(() => {
+    if (activeKeypair) {
+      window.localStorage.setItem(
+        'active_keypair',
+        activeKeypair?.keypair?.publicKey?.toBase58()
+      );
+      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        chrome.tabs.sendMessage(
+          tabs[0].id,
+          { currentPrivateKey: encode(activeKeypair?.keypair?.secretKey) },
+          function (response) {}
+        );
+      });
+    }
+  }, [activeKeypair]);
+
+  useEffect(() => {
+    if (window.localStorage.getItem('active_keypair')) {
+      setActiveKeypair(
+        keypairs?.find((k) => {
+          return (
+            k.keypair.publicKey?.toBase58() ===
+            window.localStorage.getItem('active_keypair')
+          );
+        })
+      );
+    }
+  }, []);
+
   return (
     <KeypairContext.Provider
       value={{
+        activeKeypair,
         keypairs,
         createKeypair,
         removeKeypair,

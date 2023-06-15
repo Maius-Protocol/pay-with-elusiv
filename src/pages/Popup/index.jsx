@@ -12,6 +12,7 @@ import AppProvider from '../../contexts/AppContext';
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
 import ElusivProvider from '../../contexts/ElusivContext';
 import KeypairProvider from '../../contexts/KeypairContext';
+import { persistQueryClient } from '@tanstack/react-query-persist-client';
 
 const container = document.getElementById('app-container');
 const root = createRoot(container); // createRoot(container!) if you use TypeScript
@@ -24,8 +25,13 @@ const queryClient = new QueryClient({
   },
 });
 
-const asyncStoragePersister = createSyncStoragePersister({
+const localStoragePersister = createSyncStoragePersister({
   storage: window.localStorage,
+});
+
+persistQueryClient({
+  queryClient: queryClient,
+  persister: localStoragePersister,
 });
 
 const doNotPersistQueries = ['elusiv-instance'];
@@ -33,14 +39,13 @@ const doNotPersistQueries = ['elusiv-instance'];
 root.render(
   <QueryClientProvider
     client={queryClient}
-    persistOptions={{
-      persister: asyncStoragePersister,
-      dehydrateOptions: {
-        shouldDehydrateQuery: ({ queryKey }) => {
-          return !doNotPersistQueries.includes(queryKey);
-        },
-      },
-    }}
+    // persistOptions={{
+    //   dehydrateOptions: {
+    //     shouldDehydrateQuery: ({ queryKey }) => {
+    //       return !doNotPersistQueries.includes(queryKey);
+    //     },
+    //   },
+    // }}
   >
     <AppProvider>
       <ClientWalletProvider>

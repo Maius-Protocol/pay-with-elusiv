@@ -7,7 +7,7 @@ import bs58 from 'bs58';
 import { useAppContext } from '../contexts/AppContext';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 
-interface ElusivSendInput {
+export interface ElusivSendInput {
   amount: number;
   recipient: string;
   tokenType: TokenType;
