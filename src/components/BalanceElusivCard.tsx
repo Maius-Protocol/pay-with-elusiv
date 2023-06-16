@@ -1,4 +1,4 @@
-import { Button, Card, Statistic } from 'antd';
+import { Button, Card, Statistic, Space, Avatar } from 'antd';
 import React from 'react';
 import useElusivBalance from '../services/useElusivBalance';
 import { LAMPORTS_PER_SOL } from '@solana/web3.js';
@@ -7,6 +7,7 @@ import { useMutation } from 'react-query';
 import { useElusivContext } from '../contexts/ElusivContext';
 import TokenSelect from './TokenSelect';
 import CountUp from 'react-countup';
+import { TokenImage } from '../constants/constant';
 
 const formatter = (value: number) => (
   <CountUp end={value} separator="," decimals={2} />
@@ -25,28 +26,36 @@ const BalanceElusivCard = () => {
   );
 
   return (
-    <Card>
+    <Card title="Elusiv Vault Balance">
       <div className="d-flex flex-row align-items-center justify-content-between">
-        <Statistic
-          loading={isLoadingUSDC || isNaN(elusivBalanceUSDC!)}
-          title="Private Balance"
-          value={(elusivBalanceUSDC! / LAMPORTS_PER_SOL) * 1000}
-          precision={2}
-          suffix=" USDC"
-          formatter={formatter}
-        />
-        <Statistic
-          loading={isLoadingSOL || isNaN(elusivBalanceSOL!)}
-          title="Private Balance"
-          value={elusivBalanceSOL! / LAMPORTS_PER_SOL}
-          precision={2}
-          suffix=" SOL"
-          formatter={formatter}
-        />
+        <Space>
+          <Avatar src={TokenImage['LAMPORTS']} size={'large'} />
+          <Statistic
+            loading={isLoadingSOL || isNaN(elusivBalanceSOL!)}
+            title="Solana"
+            value={elusivBalanceSOL! / LAMPORTS_PER_SOL}
+            valueStyle={{ fontSize: 16, lineHeight: 1 }}
+            precision={2}
+            suffix=" SOL"
+            formatter={formatter}
+          />
+        </Space>
+        <Space>
+          <Avatar src={TokenImage['USDC']} size={'large'} />
+          <Statistic
+            loading={isLoadingUSDC || isNaN(elusivBalanceUSDC!)}
+            title="USDC Coin"
+            value={(elusivBalanceUSDC! / LAMPORTS_PER_SOL) * 1000}
+            valueStyle={{ fontSize: 16, lineHeight: 1 }}
+            precision={2}
+            suffix=" USDC"
+            formatter={formatter}
+          />
+        </Space>
       </div>
-      <div className="d-flex flex-row align-items-center justify-content-between">
-        <TokenSelect></TokenSelect>
-      </div>
+      {/*<div className="d-flex flex-row align-items-center justify-content-between">*/}
+      {/*  <TokenSelect></TokenSelect>*/}
+      {/*</div>*/}
     </Card>
   );
 };

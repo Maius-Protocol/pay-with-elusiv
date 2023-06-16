@@ -31,29 +31,30 @@ const Popup = () => {
         <AccountHeader />
       </div>
       <Divider style={{ marginTop: '16px' }} />
-      <Alert
-        message="Please setup an address for automatically claim"
-        type="info"
-        showIcon
-        action={
-          <Button size="small" type="primary">
-            Continue
-          </Button>
-        }
-        style={{ marginBottom: '16px' }}
-      />
+      {/*<Alert*/}
+      {/*  message="Please setup an address for automatically claim"*/}
+      {/*  type="info"*/}
+      {/*  showIcon*/}
+      {/*  action={*/}
+      {/*    <Button size="small" type="primary">*/}
+      {/*      Continue*/}
+      {/*    </Button>*/}
+      {/*  }*/}
+      {/*  style={{ marginBottom: '16px' }}*/}
+      {/*/>*/}
 
-      <div>
-        <h4>(Debug)</h4>
-        <Button
-          onClick={() => {
-            const keypair: Keypair = createKeypair({});
-            keypair.publicKey.toBase58();
-          }}
-        >
-          Create new keypair
-        </Button>
-      </div>
+      {/*<div>*/}
+      {/*  <h4>(Debug)</h4>*/}
+      {/*  <Button*/}
+      {/*    onClick={() => {*/}
+      {/*      const keypair: Keypair = createKeypair({});*/}
+      {/*      keypair.publicKey.toBase58();*/}
+      {/*    }}*/}
+      {/*  >*/}
+      {/*    Create new keypair*/}
+      {/*  </Button>*/}
+      {/*</div>*/}
+
       <BalanceElusivCard />
       <CreateAndDepositKeypair />
       {activeKeypair && <CurrentActiveKeypair />}
