@@ -5,7 +5,7 @@ export const TokenDecimal = {
   LAMPORTS: 9,
   USDT: 6,
   mSOL: 9,
-  BONK: 9,
+  BONK: 5,
   SAMO: 9,
 };
 

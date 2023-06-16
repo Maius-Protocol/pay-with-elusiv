@@ -1,4 +1,4 @@
-import { Button, Modal, Form, Input, Space, Select, Avatar } from 'antd';
+import { Button, Modal, Form, Select, notification } from 'antd';
 import React, { useState } from 'react';
 import { TokenDecimal, TokenImage } from '../constants/constant';
 import { useMutation } from 'react-query';
@@ -6,11 +6,15 @@ import { ElusivTopUpInput } from '../services/useElusivTopUp';
 import { useElusivContext } from '../contexts/ElusivContext';
 import useDisclosure from '../hooks/useDisclosure';
 import DepositForm from './DepositForm';
+import type { NotificationPlacement } from 'antd/es/notification/interface';
 
 const TokenSelect = () => {
   const { isOpen, open, close } = useDisclosure();
   const [form] = Form.useForm();
   const { depositToElusiv } = useElusivContext();
+  const [api, contextHolder] = notification.useNotification();
+  let tokenAmount = 0;
+  let token = 'USDC';
   const { Option } = Select;
 
   const { mutateAsync: topup, isLoading: isTopuping } = useMutation(
@@ -18,6 +22,17 @@ const TokenSelect = () => {
       return await depositToElusiv(amount, tokenType);
     }
   );
+
+  const openNotification = (placement: NotificationPlacement) => {
+    if (token === 'LAMPORTS') {
+      token = 'SOL';
+    }
+    api.success({
+      message: `Deposit!`,
+      description: `${tokenAmount} ${token} was successfully deposit!`,
+      placement,
+    });
+  };
 
   const handleOk = async () => {
     form.submit();
@@ -30,11 +45,13 @@ const TokenSelect = () => {
       amount: tokenAmount * 10 ** tokenDecimal,
       tokenType: token,
     } as ElusivTopUpInput);
+    openNotification('top');
     close();
   };
 
   return (
     <>
+      {contextHolder}
       <Button
         type="primary"
         onClick={() => {
