@@ -27,6 +27,7 @@ const ListKeypairs = () => {
   return (
     <Collapse
       items={items}
+      collapsible="icon"
       expandIcon={() => <DownOutlined />}
       expandIconPosition={'end'}
     />
