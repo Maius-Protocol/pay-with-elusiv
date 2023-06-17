@@ -20,9 +20,9 @@ export const TokenImage = {
 
 export const TokenMintAddress = {
   USDC: 'F3hocsFVHrdTBG2yEHwnJHAJo4rZfnSwPg8d5nVMNKYE',
-  LAMPORTS: 'https://dev.elusiv.io/img/tokens/sol.png',
+  LAMPORTS: '1111111111111111111111111111',
   USDT: 'https://dev.elusiv.io/img/tokens/usdt.svg',
   mSOL: 'https://dev.elusiv.io/img/tokens/msol.png',
-  BONK: 'https://dev.elusiv.io/img/tokens/bonk.png',
-  SAMO: 'https://dev.elusiv.io/img/tokens/samo.png',
+  BONK: '5B2TabGvtPgV67jnyEhhSrFvTTBv4awdrPg2qxNashhm',
+  SAMO: 'QcvLaJJPXCTmcBsif9DxivbHQLqqjUgcXU1F97sKoPJ',
 };
