@@ -1,4 +1,4 @@
-import { Collapse, CollapseProps } from 'antd';
+import { Collapse, CollapseProps, Card } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { format, parseISO } from 'date-fns';
 import React from 'react';
@@ -25,12 +25,16 @@ const ListKeypairs = () => {
     });
   });
   return (
-    <Collapse
-      items={items}
-      collapsible="icon"
-      expandIcon={() => <DownOutlined />}
-      expandIconPosition={'end'}
-    />
+    <div style={{ paddingTop: '12px' }}>
+      <Card title={'Your temporary wallets'}>
+        <Collapse
+          items={items}
+          collapsible="icon"
+          expandIcon={() => <DownOutlined />}
+          expandIconPosition={'end'}
+        />
+      </Card>
+    </div>
   );
 };
 export default ListKeypairs;

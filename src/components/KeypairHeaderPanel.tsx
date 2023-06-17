@@ -24,7 +24,7 @@ const KeypairHeaderPanel = ({ item, time }) => {
             <div
               style={{
                 fontWeight: 'bold',
-                width: '300px',
+                width: '250px',
                 textOverflow: 'ellipsis',
               }}
             >

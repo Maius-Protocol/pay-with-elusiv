@@ -1,4 +1,4 @@
-export function shortenHashOrAddress(hash: string, len = 15, lenRight = 16) {
+export function shortenHashOrAddress(hash: string, len = 11, lenRight = 12) {
   if (!hash) return '';
   return `${hash.slice(0, len)}...${hash.slice(hash.length - lenRight)}`;
 }
