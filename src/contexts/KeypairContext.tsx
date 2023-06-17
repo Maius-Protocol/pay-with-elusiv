@@ -63,16 +63,16 @@ const KeypairProvider = ({ children }) => {
   };
 
   const removeKeypair = (publicKey: PublicKey) => {
-    setKeypairs(
-      serializedKeypairs?.filter((e) => {
+    setKeypairs([
+      ...serializedKeypairs?.filter((e) => {
         return (
           publicKey?.toBase58() !==
           Keypair.fromSecretKey(
             bs58.decode(e.privateKey)
           )?.publicKey?.toBase58()
         );
-      })
-    );
+      }),
+    ]);
     message.success(`Removed keypair: ${publicKey?.toBase58()}`);
   };
 
