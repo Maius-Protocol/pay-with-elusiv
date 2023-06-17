@@ -51,11 +51,12 @@ const KeypairHeaderPanel = ({ item, time }) => {
 
               message.success('Copied private key');
             }}
-            style={{ marginRight: '8px' }}
+            type={'dashed'}
+            style={{ marginRight: '8px', fontSize: 12 }}
           >
             Copy Private Key
           </Button>
-          <Button>Claim & Destroy</Button>
+          <Button style={{ fontSize: 12 }}>Claim & Destroy</Button>
         </div>
       </div>
     </Space>
