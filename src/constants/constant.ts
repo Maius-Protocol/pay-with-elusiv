@@ -17,3 +17,12 @@ export const TokenImage = {
   BONK: 'https://dev.elusiv.io/img/tokens/bonk.png',
   SAMO: 'https://dev.elusiv.io/img/tokens/samo.png',
 };
+
+export const TokenMintAddress = {
+  USDC: 'F3hocsFVHrdTBG2yEHwnJHAJo4rZfnSwPg8d5nVMNKYE',
+  LAMPORTS: 'https://dev.elusiv.io/img/tokens/sol.png',
+  USDT: 'https://dev.elusiv.io/img/tokens/usdt.svg',
+  mSOL: 'https://dev.elusiv.io/img/tokens/msol.png',
+  BONK: 'https://dev.elusiv.io/img/tokens/bonk.png',
+  SAMO: 'https://dev.elusiv.io/img/tokens/samo.png',
+};
