@@ -7,6 +7,7 @@ import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { useQuery } from 'react-query';
 import { TokenType } from '@elusiv/sdk';
 import useElusivBalance from './useElusivBalance';
+import { TokenMintAddress } from '../constants/constant';
 
 function useGetTokenBalance(wallet: string, mintAddress: string) {
   const rpcEndpoint =
@@ -32,12 +33,18 @@ function useGetTokenBalance(wallet: string, mintAddress: string) {
           },
         },
       ];
+
+      let balance = 0;
+
+      if (mintAddress === TokenMintAddress['LAMPORTS']) {
+        balance = await solanaConnection.getBalance(new PublicKey(wallet));
+        return balance;
+      }
+
       const accounts = await solanaConnection.getParsedProgramAccounts(
         TOKEN_PROGRAM_ID,
         { filters: filters }
       );
-
-      let balance = 0;
 
       accounts.forEach((account, i) => {
         //Parse the account data

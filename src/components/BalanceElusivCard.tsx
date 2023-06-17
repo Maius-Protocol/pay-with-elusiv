@@ -1,30 +1,21 @@
-import { Button, Card, Statistic, Space, Avatar } from 'antd';
+import { Card, Statistic, Space, Avatar } from 'antd';
 import React from 'react';
 import useElusivBalance from '../services/useElusivBalance';
 import { LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { ElusivTopUpInput } from '../services/useElusivTopUp';
 import { useMutation } from 'react-query';
 import { useElusivContext } from '../contexts/ElusivContext';
-import TokenSelect from './TokenSelect';
 import CountUp from 'react-countup';
 import { TokenImage, TokenMintAddress } from '../constants/constant';
-import useGetTokenBalance from '../services/useGetAccountBalance';
-import { useWallet } from '@solana/wallet-adapter-react';
-
 const formatter = (value: number) => (
   <CountUp end={value} separator="," decimals={2} />
 );
 
 const BalanceElusivCard = () => {
-  const { wallet } = useWallet();
   const { depositToElusiv } = useElusivContext();
   const { data: elusivBalanceUSDC, isLoading: isLoadingUSDC } =
     useElusivBalance('USDC');
-  const { data: tokenBalance, isLoading: isLoadingTokenBalance } =
-    useGetTokenBalance(
-      wallet?.adapter.publicKey?.toBase58()!,
-      TokenMintAddress['USDC']
-    );
+
   const { data: elusivBalanceSOL, isLoading: isLoadingSOL } =
     useElusivBalance('LAMPORTS');
   const { mutateAsync: topup, isLoading: isTopuping } = useMutation(
