@@ -3,8 +3,10 @@ import { CopyOutlined } from '@ant-design/icons';
 import { encode } from 'bs58';
 import React from 'react';
 import { shortenHashOrAddress } from '../common/common';
+import useClaimWallet from '../services/useClaimWallet';
 
 const KeypairHeaderPanel = ({ item, time }) => {
+  const { mutateAsync, isLoading } = useClaimWallet(item?.keypair);
   return (
     <Space align={'start'}>
       <Avatar
@@ -56,7 +58,17 @@ const KeypairHeaderPanel = ({ item, time }) => {
           >
             Copy Private Key
           </Button>
-          <Button style={{ fontSize: 12 }}>Claim & Destroy</Button>
+          <Button
+            loading={isLoading}
+            onClick={() => {
+              mutateAsync().then((r) => {
+                console.log(r);
+              });
+            }}
+            style={{ fontSize: 12 }}
+          >
+            Claim & Destroy
+          </Button>
         </div>
       </div>
     </Space>

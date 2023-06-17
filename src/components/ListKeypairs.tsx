@@ -9,7 +9,7 @@ import KeypairChildrenPanel from './KeypairChildrenPanel';
 const ListKeypairs = () => {
   const { keypairs } = useKeypairContext();
   const items: CollapseProps['items'] = [];
-  keypairs.map((keypair, index) => {
+  keypairs.forEach((keypair, index) => {
     let time;
     try {
       time = format(parseISO(keypair?.created_at), 'dd MMM yyyy, HH:mm');

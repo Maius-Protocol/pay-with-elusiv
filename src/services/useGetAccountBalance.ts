@@ -1,6 +1,8 @@
 import {
+  clusterApiUrl,
   Connection,
   GetProgramAccountsFilter,
+  LAMPORTS_PER_SOL,
   PublicKey,
 } from '@solana/web3.js';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
@@ -8,11 +10,17 @@ import { useQuery } from 'react-query';
 import { TokenType } from '@elusiv/sdk';
 import useElusivBalance from './useElusivBalance';
 import { TokenMintAddress } from '../constants/constant';
+import { useAppContext } from '../contexts/AppContext';
+import { useMemo } from 'react';
+
+const anotherEndpoint =
+  'https://rpc-devnet.helius.xyz/?api-key=1c0d5340-1025-4447-8ca8-e42da83feedd';
 
 function useGetTokenBalance(wallet: string, mintAddress: string) {
-  const rpcEndpoint =
-    'https://rpc-devnet.helius.xyz/?api-key=1c0d5340-1025-4447-8ca8-e42da83feedd';
-  const solanaConnection = new Connection(rpcEndpoint);
+  const { cluster } = useAppContext();
+  // You can also provide a custom RPC endpoint.
+  const endpoint = useMemo(() => clusterApiUrl(cluster), [cluster]);
+  const solanaConnection = new Connection(endpoint);
   return useQuery(
     ['account-balance', wallet, mintAddress],
     async () => {
@@ -38,7 +46,7 @@ function useGetTokenBalance(wallet: string, mintAddress: string) {
 
       if (mintAddress === TokenMintAddress['LAMPORTS']) {
         balance = await solanaConnection.getBalance(new PublicKey(wallet));
-        return balance;
+        return balance / LAMPORTS_PER_SOL;
       }
 
       const accounts = await solanaConnection.getParsedProgramAccounts(

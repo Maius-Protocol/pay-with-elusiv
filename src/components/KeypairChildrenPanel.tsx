@@ -34,7 +34,7 @@ const KeypairChildrenPanel = ({ item }) => {
           <Statistic
             loading={isLoadingSolBalance || isNaN(solBalance!)}
             title="Solana"
-            value={solBalance! / LAMPORTS_PER_SOL}
+            value={solBalance!}
             valueStyle={{ fontSize: 12, lineHeight: 1 }}
             precision={2}
             suffix=" SOL"
