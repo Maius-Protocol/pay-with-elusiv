@@ -1,5 +1,5 @@
 import { Avatar, Button, Card, List, message, Space, Statistic } from 'antd';
-import { CopyOutlined } from '@ant-design/icons';
+import { CopyOutlined, ReloadOutlined } from '@ant-design/icons';
 import { encode } from 'bs58';
 import React from 'react';
 import { shortenHashOrAddress } from '../common/common';
@@ -16,18 +16,37 @@ const KeypairChildrenPanel = ({ item }) => {
   const formatter = (value: number) => (
     <CountUp end={value} separator="," decimals={2} />
   );
-  const { data: usdcBalance, isLoading: isLoadingUsdcBalance } =
-    useGetTokenBalance(
-      item?.keypair?.publicKey?.toBase58(),
-      TokenMintAddress['USDC']
-    );
-  const { data: solBalance, isLoading: isLoadingSolBalance } =
-    useGetTokenBalance(
-      item?.keypair?.publicKey?.toBase58(),
-      TokenMintAddress['LAMPORTS']
-    );
+  const {
+    data: usdcBalance,
+    isRefetching: isLoadingUsdcBalance,
+    refetch: refetchUSDC,
+  } = useGetTokenBalance(
+    item?.keypair?.publicKey?.toBase58(),
+    TokenMintAddress['USDC']
+  );
+  const {
+    data: solBalance,
+    isRefetching: isLoadingSolBalance,
+    refetch: refetchSOL,
+  } = useGetTokenBalance(
+    item?.keypair?.publicKey?.toBase58(),
+    TokenMintAddress['LAMPORTS']
+  );
   return (
-    <Card title="Balance">
+    <Card
+      title={
+        <div className="d-flex flex-row align-items-center">
+          <div>Balance</div>
+          <ReloadOutlined
+            style={{ marginLeft: '12px' }}
+            onClick={() => {
+              refetchUSDC();
+              refetchSOL();
+            }}
+          />
+        </div>
+      }
+    >
       <div className="d-flex flex-row align-items-center justify-content-between">
         <Space>
           <Avatar src={TokenImage['LAMPORTS']} />

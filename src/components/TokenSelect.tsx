@@ -7,11 +7,14 @@ import { useElusivContext } from '../contexts/ElusivContext';
 import useDisclosure from '../hooks/useDisclosure';
 import DepositForm from './DepositForm';
 import type { NotificationPlacement } from 'antd/es/notification/interface';
+import useElusivBalance from '../services/useElusivBalance';
 
 const TokenSelect = () => {
   const { isOpen, open, close } = useDisclosure();
   const [form] = Form.useForm();
   const { depositToElusiv } = useElusivContext();
+  const { refetch: refetchUSDC } = useElusivBalance('USDC');
+  const { refetch: refetchSOL } = useElusivBalance('LAMPORTS');
   const [api, contextHolder] = notification.useNotification();
   let tokenAmount = 0;
   let token = 'USDC';
@@ -46,6 +49,8 @@ const TokenSelect = () => {
       tokenType: token,
     } as ElusivTopUpInput);
     openNotification('top');
+    await refetchUSDC();
+    await refetchSOL();
     close();
   };
 

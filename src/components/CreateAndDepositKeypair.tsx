@@ -9,18 +9,21 @@ import Input from 'antd/es/input/Input';
 import { useKeypairContext } from '../contexts/KeypairContext';
 import { Keypair } from '@solana/web3.js';
 import DepositForm from './DepositForm';
+import useElusivBalance from '../services/useElusivBalance';
 
 export const CreateAndDepositModal = ({ createNewOne, modalState }) => {
   const { isOpen, close } = modalState;
   const [form] = Form.useForm();
   const { sendFromElusivToAddress } = useElusivContext();
   const { createKeypair, activeKeypair } = useKeypairContext();
-
+  const { refetch: refetchUSDC } = useElusivBalance('USDC');
+  const { refetch: refetchSOL } = useElusivBalance('LAMPORTS');
   const { mutateAsync: sendBalance, isLoading: isSending } = useMutation(
     async ({ amount, tokenType, recipient }: ElusivSendInput) => {
       return await sendFromElusivToAddress(amount, tokenType, recipient);
     }
   );
+
   const handleOk = async () => {
     form.submit();
   };
@@ -35,6 +38,8 @@ export const CreateAndDepositModal = ({ createNewOne, modalState }) => {
       recipient: _keypair?.publicKey?.toBase58(),
     });
     message.success('Your key is ready to use!');
+    await refetchUSDC();
+    await refetchSOL();
     close();
   };
 
