@@ -62,8 +62,9 @@ const TokenSelect = () => {
         onClick={() => {
           open();
         }}
+        style={{ marginTop: '12px' }}
       >
-        Deposit to Elusiv Vault
+        Add more funds
       </Button>
       <Modal
         title="Deposit to Elusiv Vault"

@@ -7,6 +7,7 @@ import { useMutation } from 'react-query';
 import { useElusivContext } from '../contexts/ElusivContext';
 import CountUp from 'react-countup';
 import { TokenImage, TokenMintAddress } from '../constants/constant';
+import TokenSelect from './TokenSelect';
 const formatter = (value: number) => (
   <CountUp end={value} separator="," decimals={2} />
 );
@@ -52,9 +53,9 @@ const BalanceElusivCard = () => {
           />
         </Space>
       </div>
-      {/*<div className="d-flex flex-row align-items-center justify-content-between">*/}
-      {/*  <TokenSelect></TokenSelect>*/}
-      {/*</div>*/}
+      <div className="d-flex flex-row align-items-center justify-content-between">
+        <TokenSelect></TokenSelect>
+      </div>
     </Card>
   );
 };
