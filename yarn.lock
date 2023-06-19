@@ -1276,10 +1276,10 @@
     wasmcurves "0.2.0"
     web-worker "^1.2.0"
 
-"@elusiv/sdk@^0.1.12":
-  version "0.1.12"
-  resolved "https://registry.npmjs.org/@elusiv/sdk/-/sdk-0.1.12.tgz"
-  integrity sha512-jQ8Z1rOPtZu5WJg+k8V8EN2hwnsq/8iTXvTADxx4F3FnLXy2fmlY/bMyITu8mjIQfSwcBtY/ch+o2R4B2ErI0Q==
+"@elusiv/sdk@^0.1.13":
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/@elusiv/sdk/-/sdk-0.1.13.tgz#f056d8ae30930816be7d8f032caa9fb70b2f1e5c"
+  integrity sha512-yKRpOyxQUDEPBYZuIoCoF8DpYgwDhCQzp3eqQFdZ+knOARxoUPQ3vrAVaCmqk+QYsB6iGiu34bwQ+nSN5CAqzw==
   dependencies:
     "@dao-xyz/borsh" "^5.1.3"
     "@elusiv/ffjavascript" "^0.2.57"
@@ -5101,7 +5101,7 @@ date-fns@^2.30.0:
   dependencies:
     "@babel/runtime" "^7.21.0"
 
-dayjs@^1.11.1:
+dayjs@^1.11.1, dayjs@^1.11.8:
   version "1.11.8"
   resolved "https://registry.npmjs.org/dayjs/-/dayjs-1.11.8.tgz"
   integrity sha512-LcgxzFoWMEPO7ggRv1Y2N31hUf2R0Vj7fuy/m+Bg1K8rr+KAs1AEy4y9jd5DXe8pbHgX+srkHNS7TH6Q6ZhYeQ==
@@ -8498,6 +8498,11 @@ react-dom@^18.2.0:
   dependencies:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
+
+react-error-overlay@^6.0.11:
+  version "6.0.11"
+  resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.11.tgz#92835de5841c5cf08ba00ddd2d677b6d17ff9adb"
+  integrity sha512-/6UZ2qgEyH2aqzYZgQPxEnz33NJ2gNsnHA2o5+o4wW9bLM/JYQitNP9xPhsXwC08hMMovfGe/8retsdDsczPRg==
 
 react-is@^16.12.0, react-is@^16.13.1:
   version "16.13.1"

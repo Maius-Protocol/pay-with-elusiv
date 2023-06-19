@@ -234,6 +234,7 @@ var options = {
 if (env.NODE_ENV === 'development') {
   options.devtool = 'cheap-module-source-map';
 } else {
+  options.devtool = 'cheap-module-source-map';
   options.optimization = {
     minimize: true,
     minimizer: [

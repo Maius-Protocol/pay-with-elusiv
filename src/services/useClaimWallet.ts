@@ -22,7 +22,7 @@ function useClaimWallet(keypair: Keypair) {
   return useMutation(async () => {
     const seed = nacl.sign(encoder.encode(SEED_MESSAGE), keypair?.secretKey);
     return Promise.all(
-      ['USDC'].map(async (token) => {
+      ['LAMPORTS'].map(async (token) => {
         notification.warning({
           message: `Claim process for: ${publicKey}`,
           description: `Start with ${token}. Please do not close extension.`,
